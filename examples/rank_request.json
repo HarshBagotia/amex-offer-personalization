@@ -1,0 +1,18 @@
+{
+  "customer": {
+    "customer_id": "C00042",
+    "tenure_months": 36,
+    "avg_monthly_spend": 2200.0,
+    "num_cards": 2,
+    "digital_engagement": 0.6,
+    "spend_share": {"dining": 0.55, "travel": 0.2, "retail": 0.15, "entertainment": 0.05, "fuel": 0.05}
+  },
+  "offers": [
+    {"offer_id": "O0001", "category": "dining", "discount_pct": 20, "min_spend": 500, "days_to_expiry": 14, "brand_tier": 1},
+    {"offer_id": "O0002", "category": "fuel", "discount_pct": 10, "min_spend": 0, "days_to_expiry": 30, "brand_tier": 2},
+    {"offer_id": "O0003", "category": "travel", "discount_pct": 15, "min_spend": 5000, "days_to_expiry": 45, "brand_tier": 1},
+    {"offer_id": "O0004", "category": "retail", "discount_pct": 25, "min_spend": 1000, "days_to_expiry": 7, "brand_tier": 3},
+    {"offer_id": "O0005", "category": "entertainment", "discount_pct": 30, "min_spend": 2500, "days_to_expiry": 21, "brand_tier": 2}
+  ],
+  "k": 3
+}

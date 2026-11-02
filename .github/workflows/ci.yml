@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Install
+        run: make install
+      - name: Lint
+        run: make lint
+      - name: Unit + integration tests
+        run: make test
+
+  docker:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Train a model on synthetic data
+        run: |
+          make install
+          make data
+          make train
+      - name: Build image
+        run: make docker-build
+      - name: Smoke-test the container
+        run: |
+          docker run -d --name api -p 8000:8000 offer-ranker
+          for i in $(seq 1 30); do curl -sf localhost:8000/health && break; sleep 1; done
+          curl -sf localhost:8000/health | grep '"model_loaded":true'
+          curl -sf -X POST localhost:8000/rank -H 'Content-Type: application/json' \
+            -d @examples/rank_request.json | tee /dev/stderr | grep ranked_offers
+      - name: Container logs
+        if: always()
+        run: docker logs api || true
